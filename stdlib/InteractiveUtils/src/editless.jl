@@ -16,7 +16,11 @@ function editor()
     if Sys.iswindows() || Sys.isapple()
         default_editor = "open"
     elseif isfile("/etc/alternatives/editor")
-        default_editor = "/etc/alternatives/editor"
+        if islink("/etc/alternatives/editor")
+            default_editor = readlink("/etc/alternatives/editor")
+        else
+            default_editor = "/etc/alternatives/editor"
+        end
     else
         default_editor = "emacs"
     end
